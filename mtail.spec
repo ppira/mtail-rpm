@@ -17,6 +17,7 @@ Source0:    https://github.com/google/%{name}/archive/v%{upstream_version}.tar.g
 
 BuildRequires: golang
 BuildRequires: go-bindata
+BuildRequires: git
 
 %{?systemd_requires}
 BuildRequires: systemd
