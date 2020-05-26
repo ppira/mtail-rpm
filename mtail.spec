@@ -6,7 +6,7 @@
 
 Name:       mtail
 Version:    %{_version}
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Extract whitebox monitoring data from application logs for collection in a timeseries database
 License:    ASL 2.0
 URL:        https://github.com/google/mtail
@@ -17,7 +17,13 @@ Source0:    https://github.com/google/%{name}/archive/v%{upstream_version}.tar.g
 
 BuildRequires: golang
 BuildRequires: go-bindata
+%if 0%{?el7}
+# git 1.8 from el7 has a problem fetching some go dependencies
+# git224 can be found in IUS repository https://ius.io/
+BuildRequires: git224
+%else
 BuildRequires: git
+%endif
 
 %{?systemd_requires}
 BuildRequires: systemd
@@ -53,5 +59,8 @@ install -p -D -m 755 %{name} %{buildroot}%{_bindir}/%{name}
 %{_bindir}/%{name}
 
 %changelog
+* Tue May 26 2020 François Charlier <fcharlie@redhat.com> 3.0.0_rc35-2
+- Allow building on EL7
+
 * Tue May 26 2020 François Charlier <fcharlie@redhat.com> 3.0.0_rc35-1
 - Initial packaging
