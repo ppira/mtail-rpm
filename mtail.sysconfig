@@ -1,0 +1,1 @@
+MTAIL_OPTIONS=--progs /etc/mtail --logs /var/log/syslog

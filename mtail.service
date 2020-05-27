@@ -1,0 +1,8 @@
+[Unit]
+Description=mtail log parser service
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sysconfig/mtail
+ExecStart=/usr/bin/mtail $MTAIL_OPTIONS

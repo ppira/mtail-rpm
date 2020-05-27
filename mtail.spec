@@ -13,6 +13,8 @@ URL:        https://github.com/google/mtail
 %undefine   _disable_source_fetch
 Source0:    https://github.com/google/%{name}/archive/v%{upstream_version}.tar.gz
 %define     SHA256SUM0 5fc3fd12b88f37a556b0ef63e7766bc4a7da957fe3b169dd3d2153b310c37bec
+Source1:    mtail.service
+Source2:    mtail.sysconfig
 
 
 BuildRequires: golang
@@ -46,19 +48,32 @@ echo "%SHA256SUM0 %SOURCE0" | sha256sum -c -
 make %{name}
 
 %install
+install -d -m 755 %{buildroot}%{_sysconfdir}/%{name}
 install -p -D -m 755 %{name} %{buildroot}%{_bindir}/%{name}
+install -p -D -m 644 %SOURCE1 %{buildroot}%{_unitdir}/%{name}.service
+install -p -D -m 644 %SOURCE2 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 %post
+%systemd_post %{name}.service
 
 %preun
+%systemd_preun %{name}.service
 
 %postun
+%systemd_postun_with_restart %{name}.service
 
 %files
 %license LICENSE
+%{_unitdir}/%{name}.service
+%dir %{_sysconfdir}/%{name}
+%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %{_bindir}/%{name}
 
 %changelog
+* Wed May 27 2020 François Charlier <fcharlie@redhat.com> 3.0.0_rc35-3
+- Add sysconfig configuration
+- Add systemd service file
+
 * Tue May 26 2020 François Charlier <fcharlie@redhat.com> 3.0.0_rc35-2
 - Allow building on EL7
 
