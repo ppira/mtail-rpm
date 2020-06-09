@@ -6,7 +6,7 @@
 
 Name:       mtail
 Version:    %{_version}
-Release:    2%{?dist}
+Release:    4
 Summary:    Extract whitebox monitoring data from application logs for collection in a timeseries database
 License:    ASL 2.0
 URL:        https://github.com/google/mtail
@@ -18,7 +18,6 @@ Source2:    mtail.sysconfig
 
 
 BuildRequires: golang
-BuildRequires: go-bindata
 %if 0%{?el7}
 # git 1.8 from el7 has a problem fetching some go dependencies
 # git224 can be found in IUS repository https://ius.io/
@@ -70,6 +69,9 @@ install -p -D -m 644 %SOURCE2 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 %{_bindir}/%{name}
 
 %changelog
+* Tue Jun 9 2020 François Charlier <fcharlier@redhat.com> 3.0.0_rc35-4
+- Remove unused go-bindata dependency
+
 * Wed May 27 2020 François Charlier <fcharlie@redhat.com> 3.0.0_rc35-3
 - Add sysconfig configuration
 - Add systemd service file
