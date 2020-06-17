@@ -4,5 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
+User=mtail
+Group=mtail
 EnvironmentFile=/etc/sysconfig/mtail
 ExecStart=/usr/bin/mtail $MTAIL_OPTIONS

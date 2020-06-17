@@ -6,7 +6,7 @@
 
 Name:       mtail
 Version:    %{_version}
-Release:    4
+Release:    5
 Summary:    Extract whitebox monitoring data from application logs for collection in a timeseries database
 License:    ASL 2.0
 URL:        https://github.com/google/mtail
@@ -52,6 +52,12 @@ install -p -D -m 755 %{name} %{buildroot}%{_bindir}/%{name}
 install -p -D -m 644 %SOURCE1 %{buildroot}%{_unitdir}/%{name}.service
 install -p -D -m 644 %SOURCE2 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
+%pre
+getent group mtail > /dev/null || groupadd -r mtail
+getent passwd mtail > /dev/null || \
+    useradd -r -g mtail -s /bin/nologin \
+            -c "mtail log analyzer service" mtail
+
 %post
 %systemd_post %{name}.service
 
@@ -69,6 +75,9 @@ install -p -D -m 644 %SOURCE2 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 %{_bindir}/%{name}
 
 %changelog
+* Wed Jun 17 2020 François Charlier <fcharlier@redhat.com> 3.0.0_rc35-5
+- Create mtail user/group & run the service as this user
+
 * Tue Jun 9 2020 François Charlier <fcharlier@redhat.com> 3.0.0_rc35-4
 - Remove unused go-bindata dependency
 
