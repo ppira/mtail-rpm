@@ -3,6 +3,7 @@
 
 %global upstream_version 3.0.0-rc35
 %global _version %(v=%{upstream_version}; echo ${v/-/_})
+%global debug_package %{nil}
 
 Name:       mtail
 Version:    %{_version}
